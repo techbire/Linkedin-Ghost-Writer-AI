@@ -31,13 +31,13 @@ CREATE TRIGGER set_updated_at_subscription_plans
 -- Insert default subscription plans
 INSERT INTO public.subscription_plans (id, name, description, price, currency, billing_period, features, is_popular, stripe_price_id, razorpay_plan_id) 
 VALUES 
-  ('starter', 'Starter Plan', 'Perfect for getting started', 9.00, 'usd', 'month', 
-   '["Up to 100 todos", "Basic support", "Mobile app access"]', false, 
-   'price_starter_monthly', 'plan_starter_monthly'),
-  ('pro', 'Pro Plan', 'For professional use', 29.00, 'usd', 'month', 
-   '["Unlimited todos", "Priority support", "Advanced analytics", "Team collaboration", "Custom integrations"]', true, 
-   'price_pro_monthly', 'plan_pro_monthly'),
-  ('enterprise', 'Enterprise Plan', 'For large organizations', 99.00, 'usd', 'month', 
-   '["Everything in Pro", "Dedicated support", "SLA guarantee", "Custom branding", "SSO integration"]', false, 
-   'price_enterprise_monthly', 'plan_enterprise_monthly')
+  ('starter', 'Starter', 'For new creators finding their voice', 600.00, 'inr', '6 months', 
+   '["100 credits/month", "Personalized tone learning", "Post & carousel generator", "Email support"]', false, 
+   'price_starter_6months', 'plan_starter_6months'),
+  ('pro', 'Pro', 'For growing creators and ghostwriters', 1000.00, 'inr', '12 months', 
+   '["500 credits/month", "Trend & idea finder", "Deep research integration", "Priority support", "Engagement analytics"]', true, 
+   'price_pro_12months', 'plan_pro_12months'),
+  ('enterprise', 'Enterprise', 'For agencies and multi-brand founders', 0.00, 'inr', 'custom', 
+   '["2000 credits/billing period", "Unlimited content generation", "Team collaboration tools", "Dedicated account manager", "Advanced analytics dashboard"]', false, 
+   'price_enterprise_custom', 'plan_enterprise_custom')
 ON CONFLICT (id) DO NOTHING;

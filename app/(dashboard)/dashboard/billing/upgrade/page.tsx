@@ -106,7 +106,7 @@ export default function UpgradePage() {
                 {/* Price */}
                 <div className="text-center">
                   <div className="flex items-baseline justify-center gap-1">
-                    <span className="text-5xl font-bold">${plan.price.toFixed(0)}</span>
+                    <span className="text-5xl font-bold">₹{plan.price.toFixed(0)}</span>
                     <span className="text-muted-foreground">/{plan.billing_period}</span>
                   </div>
                   {plan.credits_per_month > 0 && (
@@ -163,7 +163,7 @@ export default function UpgradePage() {
           <div>
             <h4 className="font-semibold mb-1">What are credits?</h4>
             <p className="text-sm text-muted-foreground">
-              Credits are used to generate AI content. 1 credit = 1 text generation, 5 credits = 1 image generation.
+              Credits are used to generate AI content. Each plan includes monthly credits that refresh with your billing cycle.
             </p>
           </div>
           <div>
@@ -181,7 +181,7 @@ export default function UpgradePage() {
           <div>
             <h4 className="font-semibold mb-1">Do unused credits roll over?</h4>
             <p className="text-sm text-muted-foreground">
-              Credits are refreshed monthly with your subscription. Unused credits do not carry over to the next billing period.
+              Credits refresh with your subscription billing cycle. Unused credits do not carry over to the next period.
             </p>
           </div>
         </CardContent>

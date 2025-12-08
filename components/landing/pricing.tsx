@@ -6,11 +6,11 @@ const plans = [
   {
     id: "starter",
     name: "Starter",
-    price: "$29",
-    priceSuffix: "/month",
+    price: "₹600",
+    priceSuffix: "/6 months",
     description: "For new creators finding their voice.",
     features: [
-      "50 credits/month",
+      "100 credits/month",
       "Personalized tone learning",
       "Post & carousel generator",
       "Email support",
@@ -25,11 +25,11 @@ const plans = [
   {
     id: "pro",
     name: "Pro",
-    price: "$70",
-    priceSuffix: "/month",
+    price: "₹1000",
+    priceSuffix: "/12 months",
     description: "For growing creators and ghostwriters.",
     features: [
-      "200 credits/month",
+      "500 credits/month",
       "Trend & idea finder",
       "Deep research integration",
       "Priority support",
@@ -50,6 +50,7 @@ const plans = [
     priceSuffix: "",
     description: "For agencies and multi-brand founders.",
     features: [
+      "2000 credits/billing period",
       "Unlimited content generation",
       "Team collaboration tools",
       "Dedicated account manager",

@@ -59,42 +59,38 @@ UPDATE public.subscription_plans SET credits_per_month = 100 WHERE id = 'starter
 UPDATE public.subscription_plans SET credits_per_month = 500 WHERE id = 'pro';
 UPDATE public.subscription_plans SET credits_per_month = 2000 WHERE id = 'enterprise';
 
--- Update plan prices to match 9/29/99
-UPDATE public.subscription_plans SET price = 9.00 WHERE id = 'starter';
-UPDATE public.subscription_plans SET price = 29.00 WHERE id = 'pro';
-UPDATE public.subscription_plans SET price = 99.00 WHERE id = 'enterprise';
+-- Update plan prices to INR with new billing periods
+UPDATE public.subscription_plans SET price = 600.00, currency = 'inr', billing_period = '6 months' WHERE id = 'starter';
+UPDATE public.subscription_plans SET price = 1000.00, currency = 'inr', billing_period = '12 months' WHERE id = 'pro';
+UPDATE public.subscription_plans SET price = 0.00, currency = 'inr', billing_period = 'custom' WHERE id = 'enterprise';
 
 -- Update plan features to include credits
 UPDATE public.subscription_plans 
 SET features = jsonb_build_array(
-  '100 credits per month',
-  '1 credit per text generation',
-  '5 credits per image generation',
-  'Basic support',
-  'Mobile app access'
+  '100 credits/month',
+  'Personalized tone learning',
+  'Post & carousel generator',
+  'Email support'
 )
 WHERE id = 'starter';
 
 UPDATE public.subscription_plans 
 SET features = jsonb_build_array(
-  '500 credits per month',
-  '1 credit per text generation',
-  '5 credits per image generation',
+  '500 credits/month',
+  'Trend & idea finder',
+  'Deep research integration',
   'Priority support',
-  'Advanced analytics',
-  'Team collaboration'
+  'Engagement analytics'
 )
 WHERE id = 'pro';
 
 UPDATE public.subscription_plans 
 SET features = jsonb_build_array(
-  '2000 credits per month',
-  '1 credit per text generation',
-  '5 credits per image generation',
-  'Dedicated support',
-  'SLA guarantee',
-  'Custom branding',
-  'SSO integration'
+  '2000 credits/billing period',
+  'Unlimited content generation',
+  'Team collaboration tools',
+  'Dedicated account manager',
+  'Advanced analytics dashboard'
 )
 WHERE id = 'enterprise';
 

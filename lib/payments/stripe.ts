@@ -11,12 +11,12 @@ export const STRIPE_PLANS = {
   starter: {
     priceId: process.env.STRIPE_STARTER_PRICE_ID || "price_starter",
     name: "Starter",
-    price: 1900,
+    price: 60000, // ₹600 in paise (60000 paise = ₹600 for 6 months)
   },
   pro: {
     priceId: process.env.STRIPE_PRO_PRICE_ID || "price_pro",
     name: "Pro",
-    price: 4900,
+    price: 100000, // ₹1000 in paise (100000 paise = ₹1000 for 12 months)
   },
 }
 

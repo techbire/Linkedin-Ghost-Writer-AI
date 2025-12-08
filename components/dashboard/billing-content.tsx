@@ -184,7 +184,7 @@ export function BillingContent({ subscription, payments }: BillingContentProps) 
                     {subscription.status === "active" && <CheckCircle2 className="h-5 w-5 text-green-500" />}
                   </div>
                   <p className="text-lg font-semibold">
-                    ${currentPlan.price.toFixed(2)}
+                    ₹{currentPlan.price.toFixed(2)}
                     <span className="text-sm font-normal text-muted-foreground">/{currentPlan.billing_period}</span>
                   </p>
                   <div className="flex items-center gap-2">
@@ -260,7 +260,7 @@ export function BillingContent({ subscription, payments }: BillingContentProps) 
                     )}
                     <h4 className="font-semibold">{plan.name}</h4>
                     <p className="text-2xl font-bold">
-                      ${plan.price.toFixed(0)}
+                      ₹{plan.price.toFixed(0)}
                       <span className="text-sm font-normal text-muted-foreground">/{plan.billing_period}</span>
                     </p>
                     {plan.credits_per_month > 0 && (
