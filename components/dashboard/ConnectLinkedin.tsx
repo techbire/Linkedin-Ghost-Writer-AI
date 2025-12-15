@@ -6,10 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Linkedin, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 
-export default function ConnectLinkedInPage() {
+interface ConnectLinkedInPageProps {
+  userId: string;
+}
+
+export default function ConnectLinkedInPage({ userId }: ConnectLinkedInPageProps) {
   const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
-  const userId = searchParams.get("user_id");
 
   const handleConnect = () => {
     setLoading(true);

@@ -43,14 +43,19 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { content, tone, status = "draft", scheduled_date } = body
+    const { content, status = "draft", scheduled_date } = body
+
+    // Determine the correct status based on scheduled_date
+    let finalStatus = status
+    if (status === "scheduled" && !scheduled_date) {
+      finalStatus = "draft" // Can't be scheduled without a date
+    }
 
     const postData = {
       user_id: user.id,
       content,
-      tone,
-      status,
-      scheduled_date,
+      status: finalStatus,
+      scheduled_for: scheduled_date,
     }
 
     const { data: post, error } = await supabase

@@ -86,12 +86,14 @@ export function GroundedContentDisplay({ content, groundingMetadata }: GroundedC
     }
 
     // Add grounded text
-    const sources = support.groundingChunkIndices.map(idx => groundingMetadata.groundingChunks[idx])
+    const sources = support.groundingChunkIndices
+      ?.map(idx => groundingMetadata.groundingChunks?.[idx])
+      .filter(Boolean) ?? []
     segments.push({
       text: cleanContent.substring(startIdx, endIdx),
       isGrounded: true,
       sources,
-      confidence: support.confidenceScores[0]
+      confidence: support.confidenceScores?.[0] ?? 0
     })
 
     lastIndex = endIdx

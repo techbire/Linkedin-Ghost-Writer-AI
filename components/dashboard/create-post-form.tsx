@@ -48,17 +48,15 @@ import {
   Eye,
   Zap,
   ImageIcon,
+  ChevronLeft,
+  ChevronRight,
   Paperclip,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useCredits } from "@/hooks/use-credits";
 import { useRouter } from "next/navigation";
 import { SchedulePostDialog } from "./schedule-post-dialog";
-// import { GroundedContentDisplay } from "@/components/dashboard/grounded-content-display";
-import { Iphone } from "../ui/iphone";
-import { Safari } from "../ui/safari";
-import Image from "next/image";
-import LinkedInPostCard from "./LinkedInPostCard";
+import { GroundedContentDisplay } from "@/components/dashboard/grounded-content-display";
 
 const tones = [
   "Standard (authoritative)",
@@ -997,15 +995,13 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
         </CardContent>
       </Card>
 
-      {/* ... (keep the Generated Content Card and SchedulePostDialog as they are) */}
-      {/* Generated Content */}
-      <Card>
+   {/* ... (keep the Generated Content Card and SchedulePostDialog as they are) */}
+       {/* Generated Content */}
+       <Card>
         <CardHeader>
           <CardTitle>Generated Post</CardTitle>
           <CardDescription>
-            {generatedContent
-              ? "Your AI-generated LinkedIn post"
-              : "Generate a post to see it here"}
+            {generatedContent ? "Your AI-generated LinkedIn post" : "Generate a post to see it here"}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -1039,121 +1035,73 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
                   className="min-h-[400px] font-mono text-sm"
                 />
               ) : (
-                // <div className="space-y-4">
-                //   <div className="rounded-lg border bg-muted/30 p-4 max-h-[400px] overflow-y-auto">
-                //     <GroundedContentDisplay
-                //       content={editedContent || generatedContent}
-                //       groundingMetadata={groundingMetadata}
-                //     />
-                //   </div>
-
-                //   {generatedImages.length > 0 && (
-                //     <div className="rounded-lg border overflow-hidden">
-                //       <div className="relative">
-                //         <img
-                //           src={generatedImages[currentImageIndex]}
-                //           alt={`Generated image ${currentImageIndex + 1}`}
-                //           className="w-full h-auto"
-                //         />
-
-                //         {/* Carousel Navigation */}
-                //         {generatedImages.length > 1 && (
-                //           <>
-                //             <Button
-                //               variant="outline"
-                //               size="icon"
-                //               className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background"
-                //               onClick={() =>
-                //                 setCurrentImageIndex((prev) =>
-                //                   prev === 0
-                //                     ? generatedImages.length - 1
-                //                     : prev - 1
-                //                 )
-                //               }
-                //             >
-                //               <ChevronLeft className="h-4 w-4" />
-                //             </Button>
-
-                //             <Button
-                //               variant="outline"
-                //               size="icon"
-                //               className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background"
-                //               onClick={() =>
-                //                 setCurrentImageIndex((prev) =>
-                //                   prev === generatedImages.length - 1
-                //                     ? 0
-                //                     : prev + 1
-                //                 )
-                //               }
-                //             >
-                //               <ChevronRight className="h-4 w-4" />
-                //             </Button>
-
-                //             {/* Dot Indicators */}
-                //             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                //               {generatedImages.map((_, index) => (
-                //                 <button
-                //                   key={index}
-                //                   onClick={() => setCurrentImageIndex(index)}
-                //                   className={`h-2 w-2 rounded-full transition-all ${
-                //                     index === currentImageIndex
-                //                       ? "bg-primary w-4"
-                //                       : "bg-primary/30 hover:bg-primary/50"
-                //                   }`}
-                //                   aria-label={`Go to image ${index + 1}`}
-                //                 />
-                //               ))}
-                //             </div>
-                //           </>
-                //         )}
-
-                //         {/* Image Counter */}
-                //         <div className="absolute top-2 right-2 bg-background/80 px-2 py-1 rounded text-xs font-medium">
-                //           {currentImageIndex + 1} / {generatedImages.length}
-                //         </div>
-                //       </div>
-                //     </div>
-                //   )}
-                // </div>
-                <div className="w-full max-w-4xl mx-auto p-6">
-                  <Tabs defaultValue="iphone" className="w-full">
-                    <TabsList className="grid w-full grid-cols-2">
-                      <TabsTrigger value="iphone">
-                        <Image
-                          width={20}
-                          height={20}
-                          src="/icons/phone.png"
-                          alt="phone"
-                        />
-                      </TabsTrigger>
-                      <TabsTrigger value="safari">
-                        <Image
-                          width={20}
-                          height={20}
-                          src="/icons/tab.png"
-                          alt="phone"
-                        />
-                      </TabsTrigger>
-                    </TabsList>
-
-                    <TabsContent value="iphone" className="mt-6">
-                      <div className="flex justify-center p-5">
-                        <LinkedInPostCard
-                          content={editedContent || generatedContent}
-                        />
-                      </div>
-                    </TabsContent>
-
-                    <TabsContent value="safari" className="mt-6">
-                      <div className="flex justify-center p-5">
-                        <Safari
-                          // url="yourapp.com"
+                <div className="space-y-4">
+                  <div className="rounded-lg border bg-muted/30 p-4 max-h-[400px] overflow-y-auto">
+                    <GroundedContentDisplay 
+                      content={editedContent || generatedContent}
+                      groundingMetadata={groundingMetadata}
+                    />
+                  </div>
+                  
+                  {generatedImages.length > 0 && (
+                    <div className="rounded-lg border overflow-hidden">
+                      <div className="relative">
+                        <img 
+                          src={generatedImages[currentImageIndex]} 
+                          alt={`Generated image ${currentImageIndex + 1}`}
                           className="w-full h-auto"
-                          mode="default"
                         />
+                        
+                        {/* Carousel Navigation */}
+                        {generatedImages.length > 1 && (
+                          <>
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background"
+                              onClick={() => setCurrentImageIndex((prev) => 
+                                prev === 0 ? generatedImages.length - 1 : prev - 1
+                              )}
+                            >
+                              <ChevronLeft className="h-4 w-4" />
+                            </Button>
+                            
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/80 hover:bg-background"
+                              onClick={() => setCurrentImageIndex((prev) => 
+                                prev === generatedImages.length - 1 ? 0 : prev + 1
+                              )}
+                            >
+                              <ChevronRight className="h-4 w-4" />
+                            </Button>
+                            
+                            {/* Dot Indicators */}
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                              {generatedImages.map((_, index) => (
+                                <button
+                                  key={index}
+                                  onClick={() => setCurrentImageIndex(index)}
+                                  className={`h-2 w-2 rounded-full transition-all ${
+                                    index === currentImageIndex 
+                                      ? 'bg-primary w-4' 
+                                      : 'bg-primary/30 hover:bg-primary/50'
+                                  }`}
+                                  aria-label={`Go to image ${index + 1}`}
+                                />
+                              ))}
+                            </div>
+                          </>
+                        )}
+                        
+                        {/* Image Counter */}
+                        <div className="absolute top-2 right-2 bg-background/80 px-2 py-1 rounded text-xs font-medium">
+                          {currentImageIndex + 1} / {generatedImages.length}
+                        </div>
                       </div>
-                    </TabsContent>
-                  </Tabs>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -1166,17 +1114,15 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
                         ✨ Refine Your Post
                       </p>
                       <p className="text-xs text-blue-700 dark:text-blue-300 mt-1">
-                        Describe what you want to change (e.g., "Make it more
-                        professional" or "Add statistics" or "Shorten to 200
-                        words")
+                        Describe what you want to change (e.g., "Make it more professional" or "Add statistics" or "Shorten to 200 words")
                       </p>
                     </div>
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => {
-                        setShowRefinementInput(false);
-                        setRefinementPrompt("");
+                        setShowRefinementInput(false)
+                        setRefinementPrompt("")
                       }}
                     >
                       ✕
@@ -1212,8 +1158,8 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
                       variant="outline"
                       size="sm"
                       onClick={() => {
-                        setShowRefinementInput(false);
-                        setRefinementPrompt("");
+                        setShowRefinementInput(false)
+                        setRefinementPrompt("")
                       }}
                     >
                       Cancel
@@ -1238,20 +1184,11 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
                   <Copy className="mr-2 h-4 w-4" />
                   Copy
                 </Button>
-                <Button
-                  onClick={() => setImageRatioDialogOpen(true)}
-                  variant="outline"
-                  size="sm"
-                >
+                <Button onClick={() => setImageRatioDialogOpen(true)} variant="outline" size="sm">
                   <ImageIcon className="mr-2 h-4 w-4" />
                   Create Image
                 </Button>
-                <Button
-                  onClick={() => handleSave("draft")}
-                  variant="outline"
-                  size="sm"
-                  disabled={isSaving}
-                >
+                <Button onClick={() => handleSave("draft")} variant="outline" size="sm" disabled={isSaving}>
                   <Bookmark className="mr-2 h-4 w-4" />
                   Bookmark
                 </Button>
@@ -1296,18 +1233,16 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
 
           {!selectedHookCategory ? (
             <div className="grid grid-cols-2 gap-4 py-4">
-              {(Object.keys(hooks) as Array<keyof typeof hooks>).map(
-                (category) => (
-                  <Button
-                    key={category}
-                    variant="outline"
-                    className="h-20 text-lg font-semibold"
-                    onClick={() => setSelectedHookCategory(category)}
-                  >
-                    {category}
-                  </Button>
-                )
-              )}
+              {(Object.keys(hooks) as Array<keyof typeof hooks>).map((category) => (
+                <Button
+                  key={category}
+                  variant="outline"
+                  className="h-20 text-lg font-semibold"
+                  onClick={() => setSelectedHookCategory(category)}
+                >
+                  {category}
+                </Button>
+              ))}
             </div>
           ) : (
             <div className="space-y-4 py-4">
@@ -1336,10 +1271,7 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
       </Dialog>
 
       {/* Image Ratio Selection Dialog */}
-      <Dialog
-        open={imageRatioDialogOpen}
-        onOpenChange={setImageRatioDialogOpen}
-      >
+      <Dialog open={imageRatioDialogOpen} onOpenChange={setImageRatioDialogOpen}>
         <DialogContent className="sm:max-w-[500px] bg-background/95 backdrop-blur-sm">
           <DialogHeader>
             <DialogTitle>Generate AI Images</DialogTitle>
@@ -1352,8 +1284,8 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
             {/* Image Count Selector */}
             <div className="space-y-2">
               <Label htmlFor="image-count">Number of Images</Label>
-              <Select
-                value={imageCount.toString()}
+              <Select 
+                value={imageCount.toString()} 
                 onValueChange={(value) => setImageCount(parseInt(value))}
               >
                 <SelectTrigger id="image-count">
@@ -1375,16 +1307,12 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
                 {imageRatios.map((ratio) => (
                   <Button
                     key={ratio.value}
-                    variant={
-                      selectedImageRatio === ratio.value ? "default" : "outline"
-                    }
+                    variant={selectedImageRatio === ratio.value ? "default" : "outline"}
                     className="h-20 flex flex-col items-center justify-center"
                     onClick={() => setSelectedImageRatio(ratio.value)}
                   >
                     <div className="text-lg font-semibold">{ratio.label}</div>
-                    <div className="text-xs text-muted-foreground mt-1">
-                      {ratio.value}
-                    </div>
+                    <div className="text-xs text-muted-foreground mt-1">{ratio.value}</div>
                   </Button>
                 ))}
               </div>
@@ -1395,9 +1323,7 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
               <span className="text-sm font-medium">Total Cost:</span>
               <div className="flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-primary" />
-                <span className="text-sm font-bold">
-                  {5 * imageCount} credits
-                </span>
+                <span className="text-sm font-bold">{5 * imageCount} credits</span>
               </div>
             </div>
 
@@ -1409,12 +1335,12 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
               {isGeneratingImage ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Generating {imageCount} Image{imageCount > 1 ? "s" : ""}...
+                  Generating {imageCount} Image{imageCount > 1 ? 's' : ''}...
                 </>
               ) : (
                 <>
                   <ImageIcon className="mr-2 h-4 w-4" />
-                  Generate {imageCount} Image{imageCount > 1 ? "s" : ""}
+                  Generate {imageCount} Image{imageCount > 1 ? 's' : ''}
                 </>
               )}
             </Button>
@@ -1423,15 +1349,12 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
       </Dialog>
 
       {/* Topic Ideas Dialog */}
-      <Dialog
-        open={topicIdeasDialogOpen}
-        onOpenChange={setTopicIdeasDialogOpen}
-      >
+      <Dialog open={topicIdeasDialogOpen} onOpenChange={setTopicIdeasDialogOpen}>
         <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto bg-background/95 backdrop-blur-sm">
           <DialogHeader>
             <DialogTitle>Topic Ideas</DialogTitle>
             <DialogDescription>
-              {topic.trim()
+              {topic.trim() 
                 ? `Here are topic ideas related to: "${topic}"`
                 : "Here are trending LinkedIn topic ideas for you"}
             </DialogDescription>
@@ -1441,9 +1364,7 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
             {isGeneratingTopics ? (
               <div className="flex flex-col items-center justify-center py-8">
                 <Loader2 className="h-8 w-8 animate-spin text-primary mb-4" />
-                <p className="text-sm text-muted-foreground">
-                  Generating topic ideas...
-                </p>
+                <p className="text-sm text-muted-foreground">Generating topic ideas...</p>
               </div>
             ) : (
               <>
@@ -1453,12 +1374,12 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
                     variant="outline"
                     className="w-full justify-start text-left h-auto py-4 px-4 whitespace-normal hover:bg-primary/10"
                     onClick={() => {
-                      setTopic(idea);
-                      setTopicIdeasDialogOpen(false);
+                      setTopic(idea)
+                      setTopicIdeasDialogOpen(false)
                       toast({
                         title: "Topic selected",
                         description: "You can now generate your post",
-                      });
+                      })
                     }}
                   >
                     <div className="flex items-start gap-3">
@@ -1481,16 +1402,12 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
       </Dialog>
 
       {/* Reference Material Dialog */}
-      <Dialog
-        open={showReferenceMaterialOptions}
-        onOpenChange={setShowReferenceMaterialOptions}
-      >
+      <Dialog open={showReferenceMaterialOptions} onOpenChange={setShowReferenceMaterialOptions}>
         <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto bg-background/95 backdrop-blur-sm">
           <DialogHeader>
             <DialogTitle>Add Reference Material</DialogTitle>
             <DialogDescription>
-              Attach reference content to enhance your post with additional
-              context
+              Attach reference content to enhance your post with additional context
             </DialogDescription>
           </DialogHeader>
 
@@ -1544,12 +1461,12 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
                   variant="ghost"
                   size="sm"
                   onClick={() => {
-                    setReferenceMaterialMode(null);
-                    setReferenceMaterialTranscript("");
-                    setReferenceMaterialUrl("");
-                    setReferenceMaterialFile(null);
-                    setProcessedReferenceContent("");
-                    setIsProcessingReference(false);
+                    setReferenceMaterialMode(null)
+                    setReferenceMaterialTranscript("")
+                    setReferenceMaterialUrl("")
+                    setReferenceMaterialFile(null)
+                    setProcessedReferenceContent("")
+                    setIsProcessingReference(false)
                   }}
                 >
                   ← Back
@@ -1562,26 +1479,23 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
                       placeholder="Paste your text, transcript, or notes here..."
                       value={referenceMaterialTranscript}
                       onChange={(e) => {
-                        setReferenceMaterialTranscript(e.target.value);
-                        setProcessedReferenceContent(e.target.value);
+                        setReferenceMaterialTranscript(e.target.value)
+                        setProcessedReferenceContent(e.target.value)
                       }}
                       rows={10}
                     />
                     {processedReferenceContent && (
                       <div className="p-3 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg">
-                        <p className="text-xs text-green-700 dark:text-green-300 font-medium">
-                          ✓ Text will be used as reference
-                        </p>
+                        <p className="text-xs text-green-700 dark:text-green-300 font-medium">✓ Text will be used as reference</p>
                       </div>
                     )}
                     <Button
                       onClick={() => {
-                        setShowReferenceMaterialOptions(false);
+                        setShowReferenceMaterialOptions(false)
                         toast({
                           title: "Reference added!",
-                          description:
-                            "Text will be included in your post generation",
-                        });
+                          description: "Text will be included in your post generation",
+                        })
                       }}
                       disabled={!processedReferenceContent}
                       className="w-full"
@@ -1602,9 +1516,7 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
                     />
                     <Button
                       onClick={handleArticleUrlProcess}
-                      disabled={
-                        isProcessingReference || !referenceMaterialUrl.trim()
-                      }
+                      disabled={isProcessingReference || !referenceMaterialUrl.trim()}
                       className="w-full"
                     >
                       {isProcessingReference ? (
@@ -1619,18 +1531,15 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
                     {processedReferenceContent && (
                       <>
                         <div className="p-3 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg">
-                          <p className="text-xs text-green-700 dark:text-green-300 font-medium">
-                            ✓ Content extracted successfully
-                          </p>
+                          <p className="text-xs text-green-700 dark:text-green-300 font-medium">✓ Content extracted successfully</p>
                         </div>
                         <Button
                           onClick={() => {
-                            setShowReferenceMaterialOptions(false);
+                            setShowReferenceMaterialOptions(false)
                             toast({
                               title: "Reference added!",
-                              description:
-                                "Article content will be included in your post generation",
-                            });
+                              description: "Article content will be included in your post generation",
+                            })
                           }}
                           className="w-full"
                         >
@@ -1652,9 +1561,7 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
                     />
                     <Button
                       onClick={handleYoutubeProcess}
-                      disabled={
-                        isProcessingReference || !referenceMaterialUrl.trim()
-                      }
+                      disabled={isProcessingReference || !referenceMaterialUrl.trim()}
                       className="w-full"
                     >
                       {isProcessingReference ? (
@@ -1669,18 +1576,15 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
                     {processedReferenceContent && (
                       <>
                         <div className="p-3 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg">
-                          <p className="text-xs text-green-700 dark:text-green-300 font-medium">
-                            ✓ Transcript extracted successfully
-                          </p>
+                          <p className="text-xs text-green-700 dark:text-green-300 font-medium">✓ Transcript extracted successfully</p>
                         </div>
                         <Button
                           onClick={() => {
-                            setShowReferenceMaterialOptions(false);
+                            setShowReferenceMaterialOptions(false)
                             toast({
                               title: "Reference added!",
-                              description:
-                                "YouTube transcript will be included in your post generation",
-                            });
+                              description: "YouTube transcript will be included in your post generation",
+                            })
                           }}
                           className="w-full"
                         >
@@ -1698,8 +1602,8 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
                       type="file"
                       accept=".pdf,.txt,.doc,.docx"
                       onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) setReferenceMaterialFile(file);
+                        const file = e.target.files?.[0]
+                        if (file) setReferenceMaterialFile(file)
                       }}
                     />
                     {referenceMaterialFile && (
@@ -1726,18 +1630,15 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
                     {processedReferenceContent && (
                       <>
                         <div className="p-3 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg">
-                          <p className="text-xs text-green-700 dark:text-green-300 font-medium">
-                            ✓ Document processed successfully
-                          </p>
+                          <p className="text-xs text-green-700 dark:text-green-300 font-medium">✓ Document processed successfully</p>
                         </div>
                         <Button
                           onClick={() => {
-                            setShowReferenceMaterialOptions(false);
+                            setShowReferenceMaterialOptions(false)
                             toast({
                               title: "Reference added!",
-                              description:
-                                "Document content will be included in your post generation",
-                            });
+                              description: "Document content will be included in your post generation",
+                            })
                           }}
                           className="w-full"
                         >
@@ -1752,13 +1653,7 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
                   <div className="space-y-2">
                     <Label>Record Voice Note</Label>
                     <div className="flex flex-col items-center justify-center p-8 border-2 border-dashed rounded-lg">
-                      <Mic
-                        className={`h-12 w-12 mb-3 ${
-                          isRecording
-                            ? "text-red-500 animate-pulse"
-                            : "text-muted-foreground"
-                        }`}
-                      />
+                      <Mic className={`h-12 w-12 mb-3 ${isRecording ? 'text-red-500 animate-pulse' : 'text-muted-foreground'}`} />
                       <Button
                         variant={isRecording ? "destructive" : "default"}
                         onClick={handleVoiceRecording}
@@ -1776,31 +1671,24 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
                         )}
                       </Button>
                       <p className="text-xs text-muted-foreground mt-2">
-                        {isRecording
-                          ? "Recording in progress..."
-                          : "Click to start recording"}
+                        {isRecording ? "Recording in progress..." : "Click to start recording"}
                       </p>
                     </div>
                     {processedReferenceContent && (
                       <>
                         <div className="p-3 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg space-y-2">
-                          <p className="text-xs text-green-700 dark:text-green-300 font-medium">
-                            ✓ Voice transcribed successfully
-                          </p>
+                          <p className="text-xs text-green-700 dark:text-green-300 font-medium">✓ Voice transcribed successfully</p>
                           <div className="mt-3 p-3 bg-white dark:bg-gray-900 rounded-md border border-green-200 dark:border-green-800">
-                            <p className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
-                              {processedReferenceContent}
-                            </p>
+                            <p className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{processedReferenceContent}</p>
                           </div>
                         </div>
                         <Button
                           onClick={() => {
-                            setShowReferenceMaterialOptions(false);
+                            setShowReferenceMaterialOptions(false)
                             toast({
                               title: "Reference added!",
-                              description:
-                                "Voice transcript will be included in your post generation",
-                            });
+                              description: "Voice transcript will be included in your post generation",
+                            })
                           }}
                           className="w-full"
                         >
@@ -1816,5 +1704,5 @@ export function CreatePostForm({ userId }: CreatePostFormProps) {
         </DialogContent>
       </Dialog>
     </div>
-  );
+  )
 }

@@ -23,7 +23,7 @@ interface Post {
   id: string;
   content: string;
   status: string;
-  scheduled_date: string | null;
+  scheduled_for: string | null;
   category: string | null;
   tone: string;
   created_at: string;
@@ -86,7 +86,7 @@ export function ContentCalendar({
     return initialPosts
       .filter(
         (post) =>
-          post.scheduled_date && isSameDay(new Date(post.scheduled_date), date)
+          post.scheduled_for && isSameDay(new Date(post.scheduled_for), date)
       )
       .sort(
         (a, b) =>

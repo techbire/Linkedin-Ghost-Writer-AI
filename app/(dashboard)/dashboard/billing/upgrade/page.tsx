@@ -106,13 +106,17 @@ export default function UpgradePage() {
                 {/* Price */}
                 <div className="text-center">
                   <div className="flex items-baseline justify-center gap-1">
-                    <span className="text-5xl font-bold">₹{plan.price.toFixed(0)}</span>
-                    <span className="text-muted-foreground">/{plan.billing_period}</span>
+                    <span className="text-5xl font-bold">
+                      ₹{plan.price_inr ? (plan.price_inr / 100).toFixed(0) : '0'}
+                    </span>
+                    <span className="text-muted-foreground">
+                      /{plan.billing_period === '6_months' ? '6 months' : plan.billing_period === '12_months' ? '12 months' : plan.billing_period}
+                    </span>
                   </div>
-                  {plan.credits_per_month > 0 && (
+                  {plan.price_inr > 0 && (
                     <Badge variant="secondary" className="mt-3 flex items-center gap-1 w-fit mx-auto">
                       <Sparkles className="h-3 w-3" />
-                      <span>{plan.credits_per_month} credits per month</span>
+                      <span>Credits included in plan</span>
                     </Badge>
                   )}
                 </div>

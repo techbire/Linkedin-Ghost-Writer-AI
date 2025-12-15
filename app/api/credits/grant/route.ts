@@ -50,14 +50,14 @@ export async function POST(request: NextRequest) {
     // Get updated credit balance
     const { data: userCredits } = await supabase
       .from("user_credits")
-      .select("credits")
+      .select("available_credits")
       .eq("user_id", user.id)
       .single()
 
     return NextResponse.json({
       success: true,
       message: `Successfully granted ${creditsToGrant} credits`,
-      credits: (userCredits as any)?.credits || creditsToGrant,
+      credits: (userCredits as any)?.available_credits || creditsToGrant,
     })
   } catch (error) {
     console.error("Error in grant-credits API:", error)

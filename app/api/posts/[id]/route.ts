@@ -17,13 +17,12 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     }
 
     const body = await request.json()
-    const { content, tone, status, scheduled_date } = body
+    const { content, status, scheduled_date } = body
 
     const updateData = {
       content,
-      tone,
       status,
-      scheduled_date,
+      scheduled_for: scheduled_date,
       updated_at: new Date().toISOString(),
     }
 

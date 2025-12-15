@@ -18,11 +18,11 @@ export async function POST(request: Request) {
     // Check credits
     const { data: userCredits } = await supabase
       .from("user_credits")
-      .select("credits")
+      .select("available_credits")
       .eq("user_id", user.id)
       .maybeSingle()
 
-    const currentCredits = (userCredits as any)?.credits ?? 0
+    const currentCredits = (userCredits as any)?.available_credits ?? 0
 
     console.log("🔍 Refine Post - Credit Check:")
     console.log("  User ID:", user.id)
@@ -133,8 +133,8 @@ Generate the refined post now:`
       const { error: deductError } = await supabase.rpc("deduct_credits", {
         p_user_id: user.id,
         p_amount: 1,
-        p_type: "text_refinement",
         p_description: `Refined LinkedIn post with prompt: ${refinementPrompt.slice(0, 50)}...`,
+        p_reference_id: null,
       } as any)
 
       if (deductError) {

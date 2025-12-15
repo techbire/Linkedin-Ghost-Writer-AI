@@ -14,20 +14,10 @@ export async function GET(req: NextRequest) {
   const state = Math.random().toString(36).substring(7); // Basic CSRF token
 
   const scope = [
-     "r_basicprofile",
-     "r_member_postAnalytics",
-     "r_organization_followers",
-     "r_organization_social",
-     "rw_organization_admin",
-     "r_organization_social_feed",
-     "w_member_social",
-     "r_member_profileAnalytics",
-     "w_organization_social",
-     "r_basicprofile",
-     "w_organization_social_feed",
-     "w_member_social_feed",
-     "r_1st_connections_size",
-    // "offline_access"
+     "openid",
+     "profile",
+     "email",
+     "w_member_social"
   ].join(" ");
 
   // 👇 include user_id as a param in redirect_uri

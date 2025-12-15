@@ -15,11 +15,11 @@ export async function POST(request: NextRequest) {
     // Check if user has enough credits (5 credits for image generation)
     const { data: userCredits } = await supabase
       .from("user_credits")
-      .select("credits")
+      .select("available_credits")
       .eq("user_id", user.id)
       .maybeSingle()
 
-    const currentCredits = (userCredits as any)?.credits ?? 0
+    const currentCredits = (userCredits as any)?.available_credits ?? 0
 
     const body = await request.json()
     const { caption, ratio, count = 1 } = body
@@ -129,8 +129,8 @@ Focus on: Key themes from the caption, business imagery, inspiring visuals`
       const { error: deductError } = await supabase.rpc("deduct_credits", {
         p_user_id: user.id,
         p_amount: creditsNeeded,
-        p_type: "image_generation",
         p_description: `Generated ${imageCount} image${imageCount > 1 ? 's' : ''} with ${ratio} ratio`,
+        p_reference_id: null,
       } as any)
 
       if (deductError) {

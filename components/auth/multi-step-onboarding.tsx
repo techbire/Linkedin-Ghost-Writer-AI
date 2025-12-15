@@ -48,6 +48,7 @@ export function MultiStepOnboarding({ userEmail, initialFullName = '', onStepCha
   // Step 2: Voice Setup
   const [voiceSource, setVoiceSource] = useState<"my_style" | "influencer" | null>(null)
   const [influencerUrl, setInfluencerUrl] = useState("")
+  const [showInfluencerModal, setShowInfluencerModal] = useState(false)
 
   // Step 3: Target Audience
   const [targetAudience, setTargetAudience] = useState("")
@@ -637,7 +638,10 @@ export function MultiStepOnboarding({ userEmail, initialFullName = '', onStepCha
 
             {/* Card 2 - Learn from an Influencer */}
             <button
-              onClick={() => setVoiceSource("influencer")}
+              onClick={() => {
+                setVoiceSource("influencer")
+                setShowInfluencerModal(true)
+              }}
               className={`
                 box-border flex flex-col items-start p-5 gap-2.5 w-[474px] rounded-[18px] transition-all
                 ${voiceSource === "influencer" 
@@ -673,7 +677,7 @@ export function MultiStepOnboarding({ userEmail, initialFullName = '', onStepCha
         </div>
 
         {/* Influencer URL Input (conditionally shown as overlay/modal style) */}
-        {voiceSource === "influencer" && (
+        {showInfluencerModal && voiceSource === "influencer" && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div className="bg-white p-8 rounded-xl max-w-md w-full">
               <h3 className="text-xl font-semibold mb-4">Enter Influencer Profile</h3>
@@ -686,10 +690,27 @@ export function MultiStepOnboarding({ userEmail, initialFullName = '', onStepCha
                 className="w-full mb-4"
               />
               <div className="flex gap-2">
-                <Button onClick={() => setVoiceSource(null)} variant="outline" className="flex-1">
+                <Button onClick={() => {
+                  setVoiceSource(null)
+                  setInfluencerUrl("")
+                  setShowInfluencerModal(false)
+                }} variant="outline" className="flex-1">
                   Cancel
                 </Button>
-                <Button onClick={() => {}} className="flex-1">
+                <Button 
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    if (influencerUrl.trim()) {
+                      setError(null)
+                      setShowInfluencerModal(false)
+                    } else {
+                      setError("Please enter a valid influencer URL")
+                    }
+                  }} 
+                  type="button"
+                  className="flex-1"
+                >
                   Confirm
                 </Button>
               </div>

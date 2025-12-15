@@ -13,7 +13,7 @@ export async function GET() {
       .from("subscription_plans")
       .select("*")
       .eq("is_active", true)
-      .order("price", { ascending: true })
+      .order("price_inr", { ascending: true })
 
     if (error) {
       console.error("Error fetching subscription plans:", error)

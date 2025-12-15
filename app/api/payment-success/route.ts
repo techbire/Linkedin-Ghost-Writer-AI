@@ -26,26 +26,34 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid plan" }, { status: 400 })
     }
 
-    // Create a payment record
-    const { error: paymentError } = await supabaseAdmin
-      .from("payments")
-      .insert({
-        user_id: userId,
-        amount: plan.price,
-        currency: plan.currency,
-        status: "succeeded" as const,
-        payment_provider: "razorpay" as const,
-        provider_payment_id: paymentId,
-      })
+    // Create a payment record (if payments table exists)
+    try {
+      await supabaseAdmin
+        .from("payments")
+        .insert({
+          user_id: userId,
+          amount: plan.price_inr / 100, // Convert paise to rupees
+          currency: 'INR',
+          status: "succeeded" as const,
+          payment_provider: "razorpay" as const,
+          provider_payment_id: paymentId,
+        })
+    } catch (paymentError) {
+      console.warn("Payment record creation skipped (table may not exist):", paymentError)
+      // Continue even if payments table doesn't exist
+    }
 
-    if (paymentError) {
-      console.error("Payment record creation error:", paymentError)
-      return NextResponse.json({ error: "Failed to record payment" }, { status: 500 })
+    // Calculate subscription period based on billing_period
+    let periodDays = 30 // default
+    if (plan.billing_period === '6_months') {
+      periodDays = 180
+    } else if (plan.billing_period === '12_months') {
+      periodDays = 365
     }
 
     // Check if user already has an active subscription
     const { data: existingSubscription } = await supabaseAdmin
-      .from("subscriptions")
+      .from("user_subscriptions")
       .select("*")
       .eq("user_id", userId)
       .eq("status", "active")
@@ -54,11 +62,12 @@ export async function POST(request: Request) {
     if (existingSubscription) {
       // Update existing subscription
       const { error: updateError } = await supabaseAdmin
-        .from("subscriptions")
+        .from("user_subscriptions")
         .update({
           plan_id: planId,
           current_period_start: new Date().toISOString(),
-          current_period_end: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days from now
+          current_period_end: new Date(Date.now() + periodDays * 24 * 60 * 60 * 1000).toISOString(),
+          payment_id: paymentId,
           updated_at: new Date().toISOString()
         })
         .eq("id", existingSubscription.id)
@@ -70,15 +79,16 @@ export async function POST(request: Request) {
     } else {
       // Create new subscription
       const { error: subscriptionError } = await supabaseAdmin
-        .from("subscriptions")
+        .from("user_subscriptions")
         .insert({
           user_id: userId,
           status: "active" as const,
           plan_id: planId,
           current_period_start: new Date().toISOString(),
-          current_period_end: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days from now
+          current_period_end: new Date(Date.now() + periodDays * 24 * 60 * 60 * 1000).toISOString(),
           cancel_at_period_end: false,
-          razorpay_subscription_id: orderId, // Using orderId as subscription reference
+          payment_provider: "razorpay",
+          payment_id: paymentId,
         })
 
       if (subscriptionError) {
@@ -87,14 +97,20 @@ export async function POST(request: Request) {
       }
     }
 
+    // Extract credits from plan features (first feature usually mentions credits)
+    let creditsToAdd = 100 // default
+    if (plan.name === 'Starter') creditsToAdd = 100
+    else if (plan.name === 'Pro') creditsToAdd = 500
+    else if (plan.name === 'Enterprise') creditsToAdd = 2000
+
     // Add credits to user account using the RPC function
     const { error: creditsError } = await supabaseAdmin.rpc("add_credits", {
       p_user_id: userId,
-      p_amount: plan.credits_per_month || 0,
+      p_amount: creditsToAdd,
       p_type: "purchase",
-      p_description: `${plan.name} plan subscription - ${plan.credits_per_month} credits`,
-      p_reference_id: orderId,
-    } as any)
+      p_description: `${plan.name} plan subscription - ${creditsToAdd} credits`,
+      p_reference_id: paymentId,
+    })
 
     if (creditsError) {
       console.error("Credits addition error:", creditsError)

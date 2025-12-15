@@ -218,11 +218,11 @@ export async function POST(request: NextRequest) {
     // Check if user has enough credits (1 credit for text generation)
     const { data: userCredits } = await supabase
       .from("user_credits")
-      .select("credits")
+      .select("available_credits")
       .eq("user_id", user.id)
       .maybeSingle();
 
-    const currentCredits = (userCredits as any)?.credits ?? 0;
+    const currentCredits = (userCredits as any)?.available_credits ?? 0;
 
     if (currentCredits < 1) {
       return NextResponse.json(
@@ -733,8 +733,8 @@ IMPORTANT: You have access to Google Search. Please search for current, real-tim
       const { error: deductError } = await supabase.rpc("deduct_credits", {
         p_user_id: user.id,
         p_amount: 1,
-        p_type: "text_generation",
         p_description: `Generated LinkedIn post about: ${topic}`,
+        p_reference_id: null,
       } as any);
 
       if (deductError) {

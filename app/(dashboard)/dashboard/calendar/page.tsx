@@ -17,8 +17,8 @@ export default async function CalendarPage() {
     .from("posts")
     .select("*")
     .eq("user_id", user.id)
-    .not("scheduled_date", "is", null)
-    .order("scheduled_date", { ascending: true });
+    .not("scheduled_for", "is", null)
+    .order("scheduled_for", { ascending: true });
 
   return (
     <div className=" w-full mx-auto space-y-6">

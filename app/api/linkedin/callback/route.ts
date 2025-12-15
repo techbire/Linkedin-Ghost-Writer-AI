@@ -49,8 +49,11 @@ export async function GET(req: NextRequest) {
     // const customExpiry = 3600; // 1 hour
     // const accessTokenExpiry = new Date(Date.now() + customExpiry * 1000);
 
-    const accessTokenExpiry = new Date(Date.now() + expiresIn * 1000);
-    const refreshExpiry = new Date(Date.now() + refreshExpiresIn * 1000);
+    const accessTokenExpiry = new Date(Date.now() + (expiresIn || 3600) * 1000);
+    // If refresh token expiry is not provided, default to 60 days
+    const refreshExpiry = refreshExpiresIn 
+      ? new Date(Date.now() + refreshExpiresIn * 1000)
+      : new Date(Date.now() + 60 * 24 * 60 * 60 * 1000);
 
     // Save tokens in Supabase
     await supabase.from("user_linkedin_tokens").upsert(
@@ -58,8 +61,8 @@ export async function GET(req: NextRequest) {
         user_id: userId,
         linkedin_access_token: accessToken,
         linkedin_token_expires_at: accessTokenExpiry.toISOString(),
-        linkedin_refresh_token: refreshToken,
-        linkedin_refresh_token_expires_at: refreshExpiry.toISOString(),
+        linkedin_refresh_token: refreshToken || null,
+        linkedin_refresh_token_expires_at: refreshToken ? refreshExpiry.toISOString() : null,
         updated_at: new Date().toISOString(),
       },
       { onConflict: "user_id" }
@@ -72,23 +75,24 @@ export async function GET(req: NextRequest) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      maxAge: expiresIn, // or customExpiry
+      maxAge: expiresIn || 3600, // or customExpiry
     });
     cookieStore.set("user_id", userId, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      maxAge: refreshExpiresIn, // match refresh token lifetime
+      maxAge: refreshExpiresIn || 60 * 24 * 60 * 60, // match refresh token lifetime or default 60 days
     });
 
-    const appBaseUrl = process.env.APP_BASE_URL || `${protocol}//${host}`;
-    return NextResponse.redirect(`${appBaseUrl}/dashboard`);
+    // Use the current request's host for local dev, env vars for production
+    const isLocalDev = host.includes('localhost') || host.includes('127.0.0.1');
+    const appBaseUrl = isLocalDev ? `${protocol}//${host}` : (process.env.NEXT_PUBLIC_APP_URL || process.env.APP_BASE_URL);
+    return NextResponse.redirect(`${appBaseUrl}/dashboard/connect-linkedin?success=true`);
   } catch (error: any) {
     console.error("Error exchanging LinkedIn auth code:", error.response?.data || error.message);
-    return NextResponse.json(
-      { error: "Failed to authenticate with LinkedIn." },
-      { status: 500 }
-    );
+    const isLocalDev = host.includes('localhost') || host.includes('127.0.0.1');
+    const appBaseUrl = isLocalDev ? `${protocol}//${host}` : (process.env.NEXT_PUBLIC_APP_URL || process.env.APP_BASE_URL);
+    return NextResponse.redirect(`${appBaseUrl}/dashboard/connect-linkedin?error=auth_failed`);
   }
 }

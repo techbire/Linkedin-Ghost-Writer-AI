@@ -107,7 +107,6 @@ export async function POST(request: Request) {
     const postData: PostInsert = {
       user_id: user.id,
       content: carouselContent,
-      tone: "Standard", // Default tone for v2
       status: "draft",
       post_type: "carousel",
       slides: slidesText as any, // Store text array for compatibility

@@ -40,4 +40,17 @@ VALUES
   ('enterprise', 'Enterprise', 'For agencies and multi-brand founders', 0.00, 'inr', 'custom', 
    '["2000 credits/billing period", "Unlimited content generation", "Team collaboration tools", "Dedicated account manager", "Advanced analytics dashboard"]', false, 
    'price_enterprise_custom', 'plan_enterprise_custom')
+
+
+
+-- newly added
+   ALTER TABLE public.subscription_plans 
+ADD COLUMN IF NOT EXISTS is_popular BOOLEAN DEFAULT false;
+
+-- Mark Pro plan as popular
+UPDATE public.subscription_plans 
+SET is_popular = true 
+WHERE name = 'Pro';
+
+
 ON CONFLICT (id) DO NOTHING;

@@ -38,6 +38,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
+    // Fetch plan from database
+    const { data: plan, error: planError } = await supabase
+      .from("subscription_plans")
+      .select("*")
+      .eq("id", planId)
+      .eq("is_active", true)
+      .single()
+
+    if (planError || !plan) {
+      console.error("[v0] Plan fetch error:", planError)
+      return NextResponse.json({ error: "Invalid plan" }, { status: 400 })
+    }
+
     let profile
     try {
       const { data } = await supabase.from("profiles").select("*").eq("id", user.id).maybeSingle()
@@ -51,9 +64,11 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "Stripe is not configured. Please add Stripe credentials." }, { status: 503 })
       }
 
-      const plan = STRIPE_PLANS[planId as keyof typeof STRIPE_PLANS]
-      if (!plan) {
-        return NextResponse.json({ error: "Invalid plan" }, { status: 400 })
+      // Note: For Stripe, you'll need to create price IDs in Stripe dashboard
+      // and store them in the database or use the hardcoded STRIPE_PLANS
+      const stripePlan = STRIPE_PLANS[plan.name.toLowerCase() as keyof typeof STRIPE_PLANS]
+      if (!stripePlan) {
+        return NextResponse.json({ error: "Stripe plan configuration missing" }, { status: 400 })
       }
 
       try {
@@ -61,7 +76,7 @@ export async function POST(request: Request) {
           customer_email: user.email,
           line_items: [
             {
-              price: plan.priceId,
+              price: stripePlan.priceId,
               quantity: 1,
             },
           ],
@@ -70,7 +85,8 @@ export async function POST(request: Request) {
           cancel_url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/dashboard/billing?canceled=true`,
           metadata: {
             userId: user.id,
-            planId,
+            planId: plan.id,
+            planName: plan.name,
           },
         })
 
@@ -90,20 +106,20 @@ export async function POST(request: Request) {
         )
       }
 
-      const plan = RAZORPAY_PLANS[planId as keyof typeof RAZORPAY_PLANS]
-      if (!plan) {
-        return NextResponse.json({ error: "Invalid plan" }, { status: 400 })
+      // Use price_inr from database
+      if (!plan.price_inr) {
+        return NextResponse.json({ error: "Plan price not configured" }, { status: 400 })
       }
 
       try {
         // For testing: Create a simple order instead of subscription
         const order = await razorpay.orders.create({
-          amount: plan.price, // Amount in paise
+          amount: plan.price_inr, // Amount in paise from database
           currency: 'INR',
           receipt: `ord_${Date.now().toString().slice(-8)}`, // Max 40 chars, using last 8 digits of timestamp
           notes: {
             userId: user.id,
-            planId,
+            planId: plan.id,
             planName: plan.name,
             type: 'test_payment'
           }

@@ -21,7 +21,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
     const updateData = {
       status: "scheduled",
-      scheduled_date,
+      scheduled_for: scheduled_date,
       updated_at: new Date().toISOString(),
     }
 

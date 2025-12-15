@@ -98,11 +98,13 @@ export function AppSidebar() {
     { title: "Create Post", url: "/dashboard/create-post", icon: PenLine },
     { title: "Configure", url: "/dashboard/configure", icon: Settings },
     { title: "Templates", url: "/dashboard/templates", icon: FileText },
-        {
+    {
       title: "Carousel Generator",
       url: "/dashboard/carousel",
       icon: ImageIcon,
-    },{  title: "Carousel Generator",
+    },
+    {
+      title: "Carousel V2",
       url: "/carousel-v2",
       icon: ImageIcon,
     },

@@ -47,7 +47,7 @@ interface Post {
   id: string;
   content: string;
   status: string;
-  scheduled_date: string | null;
+  scheduled_for: string | null;
   category: string | null;
   tone: string;
   created_at: string;
@@ -103,7 +103,7 @@ export function PostLibraryContent({
     setPosts(
       posts.map((post) =>
         post.id === postId
-          ? { ...post, scheduled_date: scheduledDate, status: "scheduled" }
+          ? { ...post, scheduled_for: scheduledDate, status: "scheduled" }
           : post
       )
     );
@@ -240,11 +240,11 @@ export function PostLibraryContent({
                         {post.tone}
                       </div>
                       <div>
-                        {post.scheduled_date && (
+                        {post.scheduled_for && (
                           <p className="text-xs text-muted-foreground">
                             Scheduled on{" "}
                             {format(
-                              new Date(post.scheduled_date),
+                              new Date(post.scheduled_for),
                               "MMM d, yyyy"
                             )}
                           </p>
@@ -260,7 +260,7 @@ export function PostLibraryContent({
                         <Trash2 />
                       </Button>
                       <Button
-                        disabled={post.scheduled_date ? true : false}
+                        disabled={post.scheduled_for ? true : false}
                         onClick={() => handleSchedule(post.id)}
                         variant="ghost"
                       >
@@ -320,11 +320,11 @@ export function PostLibraryContent({
                       {viewingPost.content}
                     </p>
                   </div>
-                  {viewingPost.scheduled_date && (
+                  {viewingPost.scheduled_for && (
                     <p className="text-xs text-muted-foreground">
                       Scheduled:{" "}
                       {format(
-                        new Date(viewingPost.scheduled_date),
+                        new Date(viewingPost.scheduled_for),
                         "MMM d, yyyy 'at' h:mm a"
                       )}
                     </p>
@@ -462,11 +462,11 @@ export function PostLibraryContent({
                     </div>
                   )}
 
-                  {viewingPost.scheduled_date && (
+                  {viewingPost.scheduled_for && (
                     <p className="text-xs text-muted-foreground">
                       Scheduled:{" "}
                       {format(
-                        new Date(viewingPost.scheduled_date),
+                        new Date(viewingPost.scheduled_for),
                         "MMM d, yyyy 'at' h:mm a"
                       )}
                     </p>

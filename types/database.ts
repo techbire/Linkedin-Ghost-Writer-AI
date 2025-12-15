@@ -49,31 +49,23 @@ export interface Database {
           id: string
           name: string
           description: string | null
-          price: number
-          currency: string
-          billing_period: "month" | "year"
+          price_inr: number
+          billing_period: "monthly" | "6_months" | "12_months" | "custom"
           features: Json
-          is_popular: boolean
-          stripe_price_id: string | null
-          razorpay_plan_id: string | null
           is_active: boolean
-          credits_per_month: number
+          is_popular: boolean
           created_at: string
           updated_at: string
         }
         Insert: {
-          id: string
+          id?: string
           name: string
           description?: string | null
-          price: number
-          currency?: string
-          billing_period: "month" | "year"
+          price_inr: number
+          billing_period: "monthly" | "6_months" | "12_months" | "custom"
           features?: Json
-          is_popular?: boolean
-          stripe_price_id?: string | null
-          razorpay_plan_id?: string | null
           is_active?: boolean
-          credits_per_month?: number
+          is_popular?: boolean
           created_at?: string
           updated_at?: string
         }
@@ -81,15 +73,11 @@ export interface Database {
           id?: string
           name?: string
           description?: string | null
-          price?: number
-          currency?: string
-          billing_period?: "month" | "year"
+          price_inr?: number
+          billing_period?: "monthly" | "6_months" | "12_months" | "custom"
           features?: Json
-          is_popular?: boolean
-          stripe_price_id?: string | null
-          razorpay_plan_id?: string | null
           is_active?: boolean
-          credits_per_month?: number
+          is_popular?: boolean
           created_at?: string
           updated_at?: string
         }
@@ -201,10 +189,8 @@ export interface Database {
           id: string
           user_id: string
           content: string
-          category: string | null
-          tone: string | null
           status: "draft" | "scheduled" | "published"
-          scheduled_date: string | null
+          scheduled_for: string | null
           post_type: "single" | "carousel"
           slides: Json | null
           image_urls: string[] | null
@@ -216,10 +202,8 @@ export interface Database {
           id?: string
           user_id: string
           content: string
-          category?: string | null
-          tone?: string | null
           status?: "draft" | "scheduled" | "published"
-          scheduled_date?: string | null
+          scheduled_for?: string | null
           post_type?: "single" | "carousel"
           slides?: Json | null
           image_urls?: string[] | null
@@ -231,10 +215,8 @@ export interface Database {
           id?: string
           user_id?: string
           content?: string
-          category?: string | null
-          tone?: string | null
           status?: "draft" | "scheduled" | "published"
-          scheduled_date?: string | null
+          scheduled_for?: string | null
           post_type?: "single" | "carousel"
           slides?: Json | null
           image_urls?: string[] | null
@@ -247,21 +229,25 @@ export interface Database {
         Row: {
           id: string
           user_id: string
-          credits: number
+          total_credits: number
+          used_credits: number
+          available_credits: number
           created_at: string
           updated_at: string
         }
         Insert: {
           id?: string
           user_id: string
-          credits?: number
+          total_credits?: number
+          used_credits?: number
           created_at?: string
           updated_at?: string
         }
         Update: {
           id?: string
           user_id?: string
-          credits?: number
+          total_credits?: number
+          used_credits?: number
           created_at?: string
           updated_at?: string
         }
@@ -355,6 +341,35 @@ export interface Database {
           feedback_context?: string | null
           created_at?: string
           updated_at?: string
+        }
+      }
+      user_linkedin_tokens: {
+        Row: {
+          user_id: string
+          linkedin_access_token: string
+          linkedin_token_expires_at: string
+          linkedin_refresh_token: string | null
+          linkedin_refresh_token_expires_at: string | null
+          updated_at: string
+          created_at: string
+        }
+        Insert: {
+          user_id: string
+          linkedin_access_token: string
+          linkedin_token_expires_at: string
+          linkedin_refresh_token?: string | null
+          linkedin_refresh_token_expires_at?: string | null
+          updated_at?: string
+          created_at?: string
+        }
+        Update: {
+          user_id?: string
+          linkedin_access_token?: string
+          linkedin_token_expires_at?: string
+          linkedin_refresh_token?: string | null
+          linkedin_refresh_token_expires_at?: string | null
+          updated_at?: string
+          created_at?: string
         }
       }
     }

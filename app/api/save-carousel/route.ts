@@ -130,7 +130,6 @@ export async function POST(request: Request) {
     const postData: PostInsert = {
       user_id: user.id,
       content: carouselContent,
-      tone: tone || "Standard",
       status: "draft",
       post_type: "carousel",
       slides: slides as any,
@@ -140,7 +139,6 @@ export async function POST(request: Request) {
 
     console.log("Post data prepared:", {
       user_id: user.id,
-      tone: postData.tone,
       post_type: postData.post_type,
       slidesCount: slides.length,
       imageUrlsCount: uploadedUrls.length,

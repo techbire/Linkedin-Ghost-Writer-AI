@@ -17,12 +17,12 @@ export default async function ConnectLinkedin() {
     .from("posts")
     .select("*")
     .eq("user_id", user.id)
-    .not("scheduled_date", "is", null)
-    .order("scheduled_date", { ascending: true });
+    .not("scheduled_for", "is", null)
+    .order("scheduled_for", { ascending: true });
 
   return (
     <div className="max-w-7xl mx-auto">
-      <ConnectLinkedInPage />
+      <ConnectLinkedInPage userId={user.id} />
     </div>
   );
 }

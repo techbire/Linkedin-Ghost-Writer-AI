@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     // Get user's current credits
     const { data: userCredits, error: creditsError } = await supabase
       .from("user_credits")
-      .select("credits")
+      .select("total_credits, used_credits, available_credits")
       .eq("user_id", user.id)
       .maybeSingle()
 
@@ -25,9 +25,13 @@ export async function GET(request: NextRequest) {
     }
 
     // If no credits record exists, return 0
-    const credits = (userCredits as { credits: number } | null)?.credits ?? 0
+    const credits = userCredits?.available_credits ?? 0
 
-    return NextResponse.json({ credits })
+    return NextResponse.json({ 
+      credits,
+      totalCredits: userCredits?.total_credits ?? 0,
+      usedCredits: userCredits?.used_credits ?? 0
+    })
   } catch (error) {
     console.error("Error in credits API:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })

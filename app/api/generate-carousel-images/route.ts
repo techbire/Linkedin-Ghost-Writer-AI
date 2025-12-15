@@ -96,7 +96,7 @@ export async function POST(request: Request) {
     // Check user credits
     const { data: creditsData, error: creditsError } = await supabase
       .from("user_credits")
-      .select("credits")
+      .select("available_credits")
       .eq("user_id", user.id)
       .single<UserCredits>()
 
@@ -107,7 +107,7 @@ export async function POST(request: Request) {
       )
     }
 
-    if (creditsData.credits < creditsNeeded) {
+    if (creditsData.available_credits < creditsNeeded) {
       return NextResponse.json(
         { error: `Insufficient credits. You need ${creditsNeeded} credits.` },
         { status: 400 }
@@ -398,8 +398,8 @@ FINAL REMINDER:
       const { error: deductError } = await supabase.rpc("deduct_credits", {
         p_user_id: user.id,
         p_amount: creditsNeeded,
-        p_type: "text_generation",
         p_description: `Carousel generation: ${slideCount} slides with images`,
+        p_reference_id: null,
       } as any)
 
       if (deductError) {

@@ -75,15 +75,14 @@ async function getValidLinkedInToken(userId: string) {
 
 // --- Helper: Fetch LinkedIn Person URN ---
 async function getLinkedInUrn(token: string): Promise<string> {
-  const meResponse = await axios.get("https://api.linkedin.com/v2/me", {
-  headers: {
-    Authorization: `Bearer ${token}`,
-    "LinkedIn-Version": "202509",
-  },
-});
-return meResponse.data.id
-  ? `urn:li:person:${meResponse.data.id}`
-  : "";
+  const meResponse = await axios.get("https://api.linkedin.com/v2/userinfo", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return meResponse.data.sub
+    ? `urn:li:person:${meResponse.data.sub}`
+    : "";
 }
 
 // --- PDF DOCUMENT UPLOAD FUNCTIONS ---
@@ -210,30 +209,8 @@ export async function POST(req: NextRequest) {
       userId = cookieStore.get("user_id")?.value;
     }
 
-    // 3️⃣ If not in header or cookie, check JSON body (for manual testing)
-    if (
-      !token &&
-      req.headers.get("content-type")?.includes("application/json")
-    ) {
-      try {
-        const body = await req.json();
-        token = body?.token;
-        userId = body?.user_id;
-      } catch {
-        // ignore parse errors
-      }
-    }
-
-    // 4️⃣ Fail if still missing
-    if (!token || !userId) {
-      console.log("--------========",token,"---------==========")
-      return NextResponse.json(
-        { error: "User not authenticated (missing LinkedIn token) OR  user_id." },
-        { status: 401 }
-      );
-    }const accessToken = await getValidLinkedInToken(userId);
+    // 3️⃣ Check FormData for user_id (used by scheduler)
     const contentType = req.headers.get("content-type") || "";
-
     if (!contentType.includes("multipart/form-data")) {
       return NextResponse.json(
         { error: "Unsupported content type. Expected multipart/form-data." },
@@ -242,6 +219,20 @@ export async function POST(req: NextRequest) {
     }
 
     const formData = await req.formData();
+    if (!userId) {
+      userId = formData.get("user_id") as string;
+    }
+    
+    // 4️⃣ Fail if still missing
+    if (!token || !userId) {
+      console.log("--------========", token, "---------==========", userId)
+      return NextResponse.json(
+        { error: "User not authenticated (missing LinkedIn token or user_id)." },
+        { status: 401 }
+      );
+    }
+    
+    const accessToken = await getValidLinkedInToken(userId);
     const message = formData.get("message") as string;
     const files = formData.getAll("files") as File[];
 
