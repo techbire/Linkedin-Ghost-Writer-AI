@@ -1,231 +1,603 @@
-# SaaS MVP Template
+# Ghost Writer AI
 
-A complete, production-ready SaaS starter template built with Next.js 15, Supabase, and modern web technologies. This template includes everything you need to launch your SaaS product quickly.
+A powerful AI-driven social media content platform that empowers creators and businesses to generate, customize, and publish engaging posts effortlessly. Designed with cutting-edge AI technologies, advanced content customization, and seamless social media integration.
 
-## Features
+[![Watch the demo video](https://img.youtube.com/vi/k--35ynGztc/maxresdefault.jpg)](https://youtu.be/k--35ynGztc)
 
-- **Authentication & Authorization**: Complete auth system with Supabase (email/password, magic links, OAuth)
-- **Database**: PostgreSQL with Supabase, including Row Level Security (RLS)
-- **Payment Processing**: Integrated Stripe and Razorpay support with webhook handlers (optional)
-- **Email Notifications**: Transactional emails with Resend and React Email
-- **Dashboard**: Full-featured admin dashboard with sidebar navigation
-- **Landing Page**: Modern, responsive marketing site with pricing and FAQ
-- **Dark Mode**: Built-in theme switching with next-themes
-- **Analytics**: Vercel Analytics integration
-- **Type Safety**: Full TypeScript support with database types
-- **UI Components**: shadcn/ui component library
-- **Charts & Visualizations**: Recharts integration for data visualization
+## 🎯 Features
+
+### Content Generation & Research
+- **RAG Pipeline**: Web scraping, LLM-context parsing, and multi-source references (voice, articles, docs, text)
+- **Deep Research**: Google Search grounding for fact-based content generation
+- **Intelligent Post Creation**: AI-powered LinkedIn post generation with context awareness
+- **Topic Ideas Generator**: Auto-generate trending topics and content ideas
+
+### Content Tools & Customization
+- **Carousel Generator V1 (Image-First)**: Text → AI JSON slides → editable preview → template selection → PNG export with visual consistency
+- **Carousel Generator V2 (Text-First)**: Structured AI slides → customizable editor → dynamic PNG rendering at export for maximum flexibility
+- **Image Styling**: Advanced image manipulation and styling tools
+- **Preset Templates**: Pre-designed templates for quick content creation
+- **Post Library**: Save and organize generated posts for reuse
+
+### Social Media Integration
+- **LinkedIn Connect**: Official LinkedIn API integration for scheduling and publishing posts directly from the platform
+- **Post Scheduling**: Calendar-based scheduling system for optimal posting times
+- **Multi-Source Publishing**: Seamless integration with LinkedIn ecosystem
+
+### Account & Billing
+- **Credit-Based System**: Flexible pay-as-you-go model with monthly credit allowances
+- **Multiple Pricing Tiers**: Starter ($9/month), Pro ($29/month), and Enterprise ($99/month) plans
+- **Stripe & Razorpay Integration**: Dual payment gateway support for global accessibility
+- **Subscription Management**: Flexible subscription plans with automatic renewals
+- **Usage Analytics**: Track credit consumption and content performance
+
+### User Experience
+- **Improved Onboarding**: Streamlined user setup with best practices
+- **Intuitive Dashboard**: Centralized control hub for all platform features
+- **Dark Mode**: Built-in theme switching for comfortable viewing
+- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
 
 ## Tech Stack
 
-- **Framework**: Next.js 15 (App Router)
-- **Database**: Supabase (PostgreSQL)
-- **Authentication**: Supabase Auth
-- **Payments**: Stripe / Razorpay
-- **Email**: Resend + React Email
-- **Styling**: Tailwind CSS v4
-- **UI Components**: shadcn/ui + Radix UI
-- **Charts**: Recharts
-- **Forms**: React Hook Form + Zod
-- **Type Safety**: TypeScript
-- **Analytics**: Vercel Analytics
+- **Frontend Framework**: Next.js 15 (App Router)
+- **Backend Database**: Supabase (PostgreSQL) with Row Level Security
+- **Authentication**: Supabase Auth (email/password, OAuth, magic links)
+- **Payment Processing**: Stripe & Razorpay with webhook handling
+- **Email Service**: Resend + React Email for transactional emails
+- **UI Framework**: Tailwind CSS v4 with shadcn/ui + Radix UI components
+- **Data Visualization**: Recharts for analytics and metrics
+- **Form Management**: React Hook Form + Zod for type-safe validation
+- **Language**: TypeScript for type safety and developer experience
+- **Analytics**: Vercel Analytics for performance monitoring
+- **Web Scraping**: Firecrawl for intelligent content extraction
+- **AI Models**: Google Generative AI (Gemini) for content generation
+- **Image Processing**: Sharp for high-quality image manipulation
+- **Analytics Tracking**: PostHog for user behavior insights
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+ and npm/yarn/pnpm
-- A Supabase account
-- A Stripe or Razorpay account (optional - for payments)
-- A Resend account (for emails)
+- Node.js 18+ (recommended: 20 LTS)
+- npm, yarn, or pnpm package manager
+- Supabase account (free tier supported)
+- Google Generative AI API key for content generation
+- Stripe or Razorpay account (for payment processing)
+- Resend account (for transactional emails)
+- LinkedIn App credentials (for social integration)
 
-### Installation
+### Quick Start
 
-1. Clone the repository or download the code
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd Ghost_Writter_AI
+   ```
 
-2. Install dependencies:
-\`\`\`bash
-npm install
-# or
-yarn install
-# or
-pnpm install
-\`\`\`
+2. **Install dependencies**
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   ```
 
-3. Set up environment variables:
+3. **Set up environment variables**
+   ```bash
+   cp .env.example .env.local
+   ```
 
-Copy `.env.example` to `.env.local` and fill in your credentials:
+4. **Configure required environment variables** (see [Environment Setup](#environment-setup) section)
 
-\`\`\`bash
-cp .env.example .env.local
-\`\`\`
+5. **Run database migrations**
+   - Use the Supabase dashboard SQL editor to run scripts from the `scripts/` folder
+   - Execute migrations in order: `001_create_profiles.sql`, `002_create_todos.sql`, `003_create_subscriptions.sql`, `004_credits_system.sql`
 
-**Required environment variables:**
-- `NEXT_PUBLIC_SUPABASE_URL`: Your Supabase project URL
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Your Supabase anon key
-- `SUPABASE_SERVICE_ROLE_KEY`: Your Supabase service role key (get from Supabase dashboard)
-- `RESEND_API_KEY`: Your Resend API key
-- `FROM_EMAIL`: Email address to send from (e.g., noreply@yourdomain.com)
-- `NEXT_PUBLIC_APP_URL`: Your app URL (http://localhost:3000 for development)
+6. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+   
+   Open [http://localhost:3000](http://localhost:3000) in your browser
 
-**Optional environment variables (for payments):**
-- `PAYMENT_PROVIDER`: Either "stripe" or "razorpay" (default: "stripe")
-- `STRIPE_SECRET_KEY`: Your Stripe secret key
-- `STRIPE_WEBHOOK_SECRET`: Your Stripe webhook secret
-- `STRIPE_STARTER_PRICE_ID`: Stripe price ID for starter plan
-- `STRIPE_PRO_PRICE_ID`: Stripe price ID for pro plan
-- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`: Your Stripe publishable key
-- `RAZORPAY_KEY_ID`: Your Razorpay key ID
-- `RAZORPAY_KEY_SECRET`: Your Razorpay key secret
-- `RAZORPAY_WEBHOOK_SECRET`: Your Razorpay webhook secret
-- `RAZORPAY_STARTER_PLAN_ID`: Razorpay plan ID for starter plan
-- `RAZORPAY_PRO_PLAN_ID`: Razorpay plan ID for pro plan
+## Environment Setup
 
-**Note**: The app works without payment credentials. Payment features will show a friendly error message until you add the keys.
+### Required Environment Variables
 
-4. Run the database migrations:
+```env
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL=http://localhost:3000/dashboard
 
-Execute the SQL scripts in the `scripts` folder in your Supabase SQL editor or use the v0 script runner.
+# App Configuration
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 
-5. Start the development server:
+# AI & API Keys
+GOOGLE_API_KEY=your_google_generative_ai_key
+FIRECRAWL_API_KEY=your_firecrawl_key
 
-\`\`\`bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-\`\`\`
+# Email Configuration
+RESEND_API_KEY=your_resend_api_key
+FROM_EMAIL=noreply@yourdomain.com
 
-Open [http://localhost:3000](http://localhost:3000) to see your app.
+# Payment Provider (stripe or razorpay)
+PAYMENT_PROVIDER=stripe
+
+# Stripe Configuration (if using Stripe)
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
+STRIPE_STARTER_PRICE_ID=price_...
+STRIPE_PRO_PRICE_ID=price_...
+
+# Razorpay Configuration (if using Razorpay)
+RAZORPAY_KEY_ID=rzp_test_...
+RAZORPAY_KEY_SECRET=your_razorpay_secret
+RAZORPAY_WEBHOOK_SECRET=your_webhook_secret
+RAZORPAY_STARTER_PLAN_ID=plan_id
+RAZORPAY_PRO_PLAN_ID=plan_id
+
+# LinkedIn Integration
+NEXT_PUBLIC_LINKEDIN_CLIENT_ID=your_linkedin_app_id
+LINKEDIN_CLIENT_SECRET=your_linkedin_app_secret
+NEXT_PUBLIC_LINKEDIN_REDIRECT_URI=http://localhost:3000/dashboard/connect-linkedin
+```
+
+### Optional Environment Variables
+
+```env
+# PostHog Analytics
+NEXT_PUBLIC_POSTHOG_KEY=your_posthog_key
+POSTHOG_API_KEY=your_posthog_api_key
+
+# Vercel Analytics
+NEXT_PUBLIC_VERCEL_ANALYTICS_ID=your_vercel_analytics_id
+```
 
 ## Project Structure
 
-\`\`\`
+```
 ├── app/
-│   ├── (auth)/              # Authentication pages (login, signup)
-│   ├── (dashboard)/         # Protected dashboard pages
-│   ├── (marketing)/         # Public marketing pages
-│   ├── api/                 # API routes (checkout, webhooks)
-│   ├── layout.tsx           # Root layout
-│   └── globals.css          # Global styles
+│   ├── (auth)/                      # Authentication pages (login, signup, onboarding)
+│   ├── (dashboard)/                 # Protected dashboard pages
+│   │   ├── dashboard/               # Main dashboard overview
+│   │   ├── create-post/             # Post creation flow
+│   │   ├── carousel/                # Carousel V1 generator
+│   │   ├── carousel-v2/             # Carousel V2 editor
+│   │   ├── connect-linkedin/        # LinkedIn OAuth integration
+│   │   ├── post-library/            # Saved posts collection
+│   │   ├── billing/                 # Subscription & upgrade pages
+│   │   ├── calendar/                # Post scheduling calendar
+│   │   ├── configure/               # User preferences
+│   │   ├── settings/                # Account settings
+│   │   └── templates/               # Template browser
+│   ├── (marketing)/                 # Public marketing pages
+│   ├── api/
+│   │   ├── generate-post/           # Text generation endpoint
+│   │   ├── generate-carousel*/      # Carousel generation endpoints
+│   │   ├── generate-image/          # Image generation/styling
+│   │   ├── linkedin/                # LinkedIn API integration
+│   │   ├── credits/                 # Credit system management
+│   │   ├── checkout/                # Payment checkout
+│   │   ├── webhook/                 # Stripe & Razorpay webhooks
+│   │   └── scheduler/               # Post scheduling backend
+│   ├── layout.tsx                   # Root layout with theming & providers
+│   └── globals.css                  # Global styles
 ├── components/
-│   ├── dashboard/           # Dashboard-specific components
-│   ├── landing/             # Landing page components
-│   └── ui/                  # Reusable UI components (shadcn)
-├── emails/                  # Email templates (React Email)
+│   ├── dashboard/                   # Dashboard-specific components
+│   ├── landing/                     # Marketing page components
+│   ├── ui/                          # Reusable shadcn/ui components
+│   ├── PostHogProvider.tsx          # Analytics provider
+│   └── CarouselEditor.tsx           # Carousel editing UI
+├── hooks/
+│   ├── use-user.ts                  # User authentication hook
+│   ├── use-credits.ts               # Credit balance management
+│   └── use-subscription.ts          # Subscription status hook
 ├── lib/
-│   ├── email/               # Email utilities
-│   ├── payments/            # Payment provider integrations
-│   └── supabase/            # Supabase client utilities
-├── scripts/                 # Database migration scripts
-└── types/                   # TypeScript type definitions
-\`\`\`
+│   ├── payments/                    # Stripe/Razorpay integrations
+│   ├── email/                       # Email utilities
+│   ├── supabase/                    # Supabase client utilities
+│   └── prompts/                     # AI system prompts
+├── emails/                          # React Email templates
+├── types/
+│   └── database.ts                  # TypeScript database types
+├── scripts/
+│   ├── 001_create_profiles.sql      # User profiles table
+│   ├── 002_create_todos.sql         # Todos CRUD example
+│   ├── 003_create_subscriptions.sql # Subscription management
+│   └── 004_credits_system.sql       # Credit system tables & functions
+├── public/
+│   ├── placeholder-logo.png         # App branding
+│   └── systemprompt.md              # AI system prompt configuration
+├── styles/
+│   └── variables.css                # Design tokens
+├── next.config.mjs                  # Next.js configuration
+├── tsconfig.json                    # TypeScript configuration
+├── tailwind.config.ts               # Tailwind CSS configuration
+└── package.json                     # Project dependencies
+```
+
+## Key Features Guide
+
+### Credit System
+
+The platform uses a credit-based model for AI operations:
+
+| Operation | Credits | Type |
+|-----------|---------|------|
+| Text Post Generation | 1 credit | Deducted on generation |
+| Image Generation | 5 credits | Deducted on generation |
+| Deep Research | 3 credits | Deducted on research |
+| Carousel Generation | 10 credits | Deducted per carousel |
+
+**Monthly Credit Allowances:**
+- **Starter Plan**: 100 credits/month ($9)
+- **Pro Plan**: 500 credits/month ($29)
+- **Enterprise Plan**: 2000 credits/month ($99)
+
+View your credit balance and transaction history in the Dashboard → Billing section.
+
+### Carousel Creation
+
+**Version 1 (Image-First)**
+1. Enter text/topic
+2. AI generates structured JSON slide content
+3. Edit preview and arrange slides
+4. Select visual template
+5. Export as PNG carousel with visual consistency across slides
+
+**Version 2 (Text-First)**
+1. Input content structure
+2. AI generates text-based slides
+3. Customize in the editor
+4. Text is stored in database
+5. PNG is dynamically rendered at export time for maximum flexibility
+
+### LinkedIn Integration
+
+1. Navigate to Dashboard → Connect LinkedIn
+2. Authenticate with your LinkedIn account
+3. Grant necessary permissions
+4. Schedule posts directly from the platform
+5. Posts are queued and published at optimal times
+
+### Post Library
+
+- Save generated posts for future reference
+- Organize posts by category or date
+- Quick-repost functionality
+- Export posts for external use
+
+## Subscription & Payments
+
+### Payment Providers
+
+The platform supports two payment gateways:
+
+**Stripe** (Recommended for US/International)
+- Setup: [Stripe Documentation](SETUP_GUIDE.md#stripe-setup)
+- Best for: International customers, ACH transfers
+
+**Razorpay** (Recommended for India)
+- Setup: [Razorpay Documentation](SETUP_GUIDE.md#razorpay-setup)
+- Best for: Indian customers, UPI/local payment methods
+
+### Subscription Management
+
+- Automatic monthly billing
+- Cancel anytime from settings
+- Upgrade/downgrade plans instantly
+- Tax handling included (Stripe)
+- Invoice generation and history
+
+See [SUBSCRIPTION_SETUP.md](SUBSCRIPTION_SETUP.md) for detailed setup instructions.
+
+## API Endpoints
+
+### Content Generation
+
+| Endpoint | Method | Description | Credits |
+|----------|--------|-------------|---------|
+| `/api/generate-post` | POST | Generate AI-powered LinkedIn posts | 1 |
+| `/api/generate-carousel` | POST | Generate carousel V1 (image-first) | 10 |
+| `/api/generate-carousel-draft` | POST | Generate carousel V2 draft slides | 5 |
+| `/api/generate-carousel-slides` | POST | Generate individual carousel slides | 2 per slide |
+| `/api/generate-image` | POST | Generate/style images | 5 |
+| `/api/generate-topic-ideas` | POST | Generate trending topic ideas | 1 |
+| `/api/export-carousel` | POST | Export carousel as PNG | 0 (cached) |
+| `/api/render-carousel-slide` | POST | Render individual slide | 0 (cached) |
+| `/api/refine-post` | POST | Refine/edit generated post | 1 |
+
+### Social Integration
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/linkedin/auth` | GET | Start LinkedIn OAuth flow |
+| `/api/linkedin/callback` | GET | LinkedIn OAuth callback handler |
+| `/api/linkedin/post` | POST | Publish post to LinkedIn |
+| `/api/linkedin/status` | GET | Check LinkedIn connection status |
+| `/api/linkedin/refresh` | POST | Refresh LinkedIn credentials |
+| `/api/linkedin/disconnect` | POST | Revoke LinkedIn access |
+
+### Credit Management
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/credits` | GET | Get current credit balance |
+| `/api/credits/transactions` | GET | Get credit transaction history |
+| `/api/credits/grant` | POST | Grant credits (admin only) |
+
+### Payment & Billing
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/subscription-plans` | GET | Get available subscription plans |
+| `/api/user-subscription` | GET | Get user's current subscription |
+| `/api/checkout` | POST | Create checkout session |
+| `/api/webhook/stripe` | POST | Stripe webhook handler |
+| `/api/webhook/razorpay` | POST | Razorpay webhook handler |
+| `/api/payment-success` | GET | Confirm successful payment |
+
+### Data Management
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/save-carousel` | POST | Save carousel V1 to library |
+| `/api/save-carousel-v2` | POST | Save carousel V2 to library |
 
 ## Database Schema
 
-The template includes the following tables:
+### Core Tables
 
-- **profiles**: User profile information
-- **todos**: Example CRUD functionality
-- **subscriptions**: User subscription data
-- **payments**: Payment transaction history
+**profiles**
+- User profile information
+- Social media handles and preferences
+- Account settings and preferences
 
-All tables include Row Level Security (RLS) policies for data protection.
+**user_credits**
+- Current credit balance
+- Last updated timestamp
 
-## Payment Integration
+**credit_transactions**
+- Complete transaction history
+- Type: text_generation, image_generation, deep_research, carousel_generation
+- Reference tracking for audit trails
 
-**Payment integration is optional.** The app works fully without payment credentials. When users try to checkout without configured payment providers, they'll see a friendly error message.
+**subscriptions**
+- Active subscription tier (starter, pro, enterprise)
+- Billing cycle and renewal date
+- Auto-renewal status
 
-### Stripe Setup
+**subscription_plans**
+- Plan definitions with credit allowances
+- Pricing tiers
+- Feature availability per tier
 
-1. Create a Stripe account at [stripe.com](https://stripe.com)
-2. Get your API keys from the Stripe dashboard
-3. Create products and prices in Stripe
-4. Add the price IDs to your environment variables
-5. Set `PAYMENT_PROVIDER=stripe` in your environment variables
-6. Set up webhook endpoint: `https://yourdomain.com/api/webhook/stripe`
-7. Add the webhook secret to your environment variables
+**payments**
+- Payment transaction records
+- Payment method and status
+- Provider reference (Stripe/Razorpay transaction ID)
 
-### Razorpay Setup
+**carousel_saves**
+- Saved carousel designs
+- User-created templates and versions
+- Export history
 
-1. Create a Razorpay account at [razorpay.com](https://razorpay.com)
-2. Get your API keys from the Razorpay dashboard
-3. Create subscription plans in Razorpay
-4. Add the plan IDs to your environment variables
-5. Set `PAYMENT_PROVIDER=razorpay` in your environment variables
-6. Set up webhook endpoint: `https://yourdomain.com/api/webhook/razorpay`
-7. Add the webhook secret to your environment variables
-
-## Email Setup
-
-1. Create a Resend account at [resend.com](https://resend.com)
-2. Verify your domain or use the test domain
-3. Get your API key from the Resend dashboard
-4. Add the API key to your environment variables
-5. Customize email templates in the `emails/` folder
+All tables include Row Level Security (RLS) policies for data protection and Row-level access control.
 
 ## Deployment
 
 ### Deploy to Vercel
 
 1. Push your code to GitHub
-2. Import your repository in Vercel
-3. Add all environment variables in the Vercel dashboard
-4. Deploy!
+   ```bash
+   git add .
+   git commit -m "Deploy Ghost Writer AI"
+   git push origin main
+   ```
 
-### Post-Deployment
+2. Import repository in Vercel
+   - Go to [vercel.com](https://vercel.com)
+   - Click "New Project"
+   - Select your GitHub repository
+   - Click "Import"
 
-1. Update webhook URLs in Stripe/Razorpay dashboard
-2. Update `NEXT_PUBLIC_APP_URL` environment variable
-3. Test authentication flow
-4. Test payment flow
-5. Test email delivery
+3. Configure environment variables in Vercel dashboard
+   - Add all required environment variables from the `.env.local` file
+   - Ensure `NEXT_PUBLIC_` variables are exposed
 
-## Customization
+4. Deploy
+   - Click "Deploy"
+   - Monitor build logs
+   - Verify deployment is successful
 
-### Branding
+### Post-Deployment Configuration
 
-- Update the app name in `components/landing/header.tsx` and `components/dashboard/sidebar.tsx`
-- Modify colors in `app/globals.css` (design tokens)
-- Update metadata in `app/layout.tsx`
-- Replace placeholder logo and favicon
+1. **Update API Endpoints**
+   - Update webhook URLs in Stripe/Razorpay dashboards
+   - Set production webhook URLs: `https://yourdomain.com/api/webhook/stripe`
 
-### Features
+2. **Update Environment**
+   - Change `NEXT_PUBLIC_APP_URL` to your production domain
+   - Update LinkedIn redirect URI to production domain
 
-- Add new dashboard pages in `app/(dashboard)/dashboard/`
-- Create new API routes in `app/api/`
-- Add email templates in `emails/`
-- Extend database schema with new tables in `scripts/`
+3. **Verify Integrations**
+   - Test authentication flow
+   - Test payment flow with test cards
+   - Test email delivery
+   - Test LinkedIn connection
+   - Verify credit system operations
+
+4. **Security Checks**
+   - Verify all secrets are configured
+   - Enable HTTPS only mode
+   - Configure CORS if needed
+   - Set up monitoring and alerting
+
+## Development Workflow
+
+### Available Commands
+
+```bash
+# Development
+npm run dev              # Start dev server with hot reload
+
+# Building & Production
+npm run build            # Build for production
+npm start                # Start production server
+
+# Code Quality
+npm run lint             # Run ESLint
+
+# Data Management
+npm run scheduler        # Run background scheduler for LinkedIn publishing
+npm run scraped-data:list    # List cached scraped content
+npm run scraped-data:stats   # Show storage statistics
+npm run scraped-data:cleanup # Remove old cached content
+```
+
+### Development Best Practices
+
+- Use TypeScript for type safety
+- Follow shadcn/ui component patterns
+- Implement RLS policies for all new database tables
+- Test payment flows with provider test cards
+- Monitor credit deductions in development
+- Use environment variables for all configuration
 
 ## Security Best Practices
 
-- All database tables use Row Level Security (RLS)
-- API routes verify authentication before processing
-- Webhook endpoints verify signatures
-- Environment variables are never exposed to the client (except NEXT_PUBLIC_* vars)
-- Passwords are hashed by Supabase Auth
-- HTTPS is enforced in production
-- Payment credentials are optional and gracefully handled
+✅ **Implemented Security Measures**
+- Row Level Security (RLS) on all database tables
+- API route authentication verification
+- Webhook signature verification (Stripe/Razorpay)
+- Environment variable protection (NEXT_PUBLIC_ only exposed)
+- Password hashing via Supabase Auth
+- HTTPS enforcement in production
+- Credit transaction audit trail
+- User-specific data isolation
 
-## Support
+## Monitoring & Analytics
 
-For issues or questions:
-- Check the documentation
-- Review the code comments
-- Open an issue on GitHub
-- Contact support
+### Metrics Tracked
+- User signup and activation
+- Feature usage (post generation, carousel creation, LinkedIn publishes)
+- Credit consumption patterns
+- Subscription metrics (signups, churn, MRR)
+- Performance metrics (API response times, error rates)
+- Revenue analytics
 
-## License
+### Dashboard
+- Access analytics via PostHog dashboard
+- Vercel deployment monitoring
+- Supabase database metrics
 
-MIT License - feel free to use this template for your projects.
+## Troubleshooting
 
-## Credits
+### Common Issues
 
-Built with:
-- [Next.js](https://nextjs.org)
-- [Supabase](https://supabase.com)
-- [shadcn/ui](https://ui.shadcn.com)
-- [Stripe](https://stripe.com)
-- [Resend](https://resend.com)
-- [Vercel](https://vercel.com)
+**Issue: "Credits insufficient" error**
+- Solution: Check credit balance in Dashboard → Billing
+- Upgrade subscription for more monthly credits
+- Credits reset monthly on the subscription renewal date
+
+**Issue: LinkedIn integration not working**
+- Solution: Verify LinkedIn app credentials are configured
+- Ensure redirect URI matches your domain exactly
+- Check if LinkedIn token has expired (refresh automatically)
+- Verify user has granted proper permissions
+
+**Issue: Email not sending**
+- Solution: Check Resend API key is valid
+- Verify domain is verified in Resend (if using custom domain)
+- Check email address is valid
+- Review Resend dashboard for delivery failures
+
+**Issue: Payment webhook not triggering**
+- Solution: Verify webhook URL is correct in payment provider dashboard
+- Check webhook secret is configured correctly
+- Enable webhook retries in provider settings
+- Review webhook delivery logs in provider dashboard
+
+**Issue: Database connection errors**
+- Solution: Verify Supabase credentials are correct
+- Check internet connectivity
+- Ensure Supabase project is active
+- Review Supabase connection pool settings
+
+### Getting Help
+
+1. Check the relevant setup guide:
+   - Payment issues → [SETUP_GUIDE.md](SETUP_GUIDE.md)
+   - Subscription setup → [SUBSCRIPTION_SETUP.md](SUBSCRIPTION_SETUP.md)
+   - Credit system → [CREDITS_SYSTEM.md](CREDITS_SYSTEM.md)
+   - LinkedIn integration → [LinkedIn API Documentation](https://learn.microsoft.com/en-us/linkedin/)
+
+2. Review application logs
+3. Check browser console for client-side errors
+4. Enable debug mode for detailed logging
+
+## Contributing
+
+We welcome contributions! Please follow these guidelines:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## Roadmap
+
+Planned features and improvements:
+- [ ] Multi-language content generation
+- [ ] Advanced A/B testing framework
+- [ ] Team collaboration features
+- [ ] Mobile app (iOS/Android)
+- [ ] Content calendar with team scheduling
+- [ ] Advanced analytics with recommendations
+- [ ] API for third-party integrations
+- [ ] Custom AI model fine-tuning
+- [ ] Bulk post generation
+- [ ] Sentiment analysis and optimization
+
+**Core Technologies**
+- [Next.js](https://nextjs.org) - React framework
+- [Supabase](https://supabase.com) - Open source Firebase alternative
+- [TypeScript](https://www.typescriptlang.org/) - Type-safe JavaScript
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS
+
+**UI & Components**
+- [shadcn/ui](https://ui.shadcn.com) - High-quality React components
+- [Radix UI](https://www.radix-ui.com/) - Unstyled, accessible components
+- [Lucide Icons](https://lucide.dev/) - Beautiful icon library
+
+**AI & Processing**
+- [Google Generative AI](https://ai.google.dev/) - Advanced text & image generation
+- [Firecrawl](https://firecrawl.dev/) - Web scraping & data extraction
+- [Sharp](https://sharp.pixelplumbing.com/) - Image processing
+
+**Payment & Monetization**
+- [Stripe](https://stripe.com) - Global payment processing
+- [Razorpay](https://razorpay.com) - India-focused payments
+
+**Email & Communication**
+- [Resend](https://resend.com) - Transactional email service
+- [React Email](https://react.email/) - Email template library
+
+**Analytics & Monitoring**
+- [Vercel](https://vercel.com) - Hosting & deployment
+- [Vercel Analytics](https://vercel.com/analytics) - Performance monitoring
+- [PostHog](https://posthog.com/) - Product analytics
+
+**Social Integration**
+- [LinkedIn API](https://www.linkedin.com/developers) - Social publishing
+
+---
+
+<div align="center">
+
+</div>
