@@ -2,8 +2,11 @@
 
 A powerful AI-driven social media content platform that empowers creators and businesses to generate, customize, and publish engaging posts effortlessly. Designed with cutting-edge AI technologies, advanced content customization, and seamless social media integration.
 
-[![Watch the demo video](https://img.youtube.com/vi/k--35ynGztc/maxresdefault.jpg)](https://youtu.be/k--35ynGztc)
+## 🎥 Watch Demo
 
+[![Watch the Ghost Writer AI Demo](https://img.youtube.com/vi/k--35ynGztc/maxresdefault.jpg)](https://youtu.be/k--35ynGztc)
+
+▶️ Click the image above to watch the complete demo video.
 ## 🎯 Features
 
 ### Content Generation & Research
