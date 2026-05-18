@@ -224,6 +224,60 @@ NEXT_PUBLIC_VERCEL_ANALYTICS_ID=your_vercel_analytics_id
 ```
 
 ## Key Features Guide
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    GHOST WRITER AI RAG PIPELINE                 │
+└─────────────────────────────────────────────────────────────────┘
+
+1. DATA RETRIEVAL & INGESTION
+   ├─ Extract context from multiple sources:
+   │  ├─ Web URLs → Firecrawl API (markdown extraction)
+   │  ├─ YouTube → Video transcript extraction
+   │  ├─ Documents → Gemini document analysis (PDFs, DOCX)
+   │  ├─ Voice → Manual transcription
+   │  └─ Text → Direct user input
+   │
+   └─ Store in Supabase (`business_context` table)
+
+2. CONTEXT BUILDING
+   ├─ Retrieve user profile data:
+   │  ├─ Business context (name, industry, services, keywords)
+   │  ├─ Voice analysis (writing style, personality, patterns)
+   │  ├─ Writing templates (LinkedIn-scraped or user-defined)
+   │  └─ Preset templates (category-based templates)
+   │
+   └─ Aggregate reference material from selected sources
+
+3. LLM CONTEXT INJECTION
+   ├─ `buildLLMContext()` function creates comprehensive prompt:
+   │  ├─ System prompt (LinkedIn Native Content Strategist)
+   │  ├─ Business/persona context
+   │  ├─ Voice analysis (CRITICAL for style matching)
+   │  ├─ Writing template (Custom/LinkedIn/Preset)
+   │  ├─ Reference material (articles, transcripts, documents)
+   │  ├─ Topic & tone guidelines
+   │  └─ Content type instructions (Story/Steps/Lists)
+   │
+   └─ Total context becomes the augmented prompt
+
+4. CONTENT GENERATION
+   ├─ Pass augmented context to Gemini API
+   ├─ Gemini generates post with context awareness
+   ├─ Apply tone guidelines + hook requirements
+   └─ Generate carousel slides (V1 & V2 variants)
+
+5. DEEPRESEARCH MODE (Optional)
+   ├─ URL scraping with Firecrawl
+   ├─ LLM context parsing
+   ├─ Multi-source synthesis
+   └─ Fact-based content generation
+
+6. OUTPUT & STORAGE
+   ├─ Generate personalized LinkedIn posts
+   ├─ Store in `posts` table
+   ├─ Save carousel metadata
+   └─ Track credit usage
+```
 
 ### Credit System
 
